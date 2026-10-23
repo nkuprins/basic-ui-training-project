@@ -17,12 +17,7 @@
 </head>
 <body>
 
-  <!-- Navigation — same on every page -->
-  <nav>
-    <a th:href="@{/}">Home</a>
-    <a th:href="@{/animals}">All animals</a>
-    <a th:href="@{/animals/new}">Add animal</a>
-  </nav>
+  <nav th:replace="~{fragments/nav :: nav}"></nav>
 
   <main>
     <h1>Welcome to the Shelter</h1>
