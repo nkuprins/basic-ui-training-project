@@ -1,5 +1,6 @@
 package lv.bootcamp.shelter.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lv.bootcamp.shelter.dto.AnimalCreateRequest;
@@ -31,11 +32,13 @@ public class AnimalApiController {
 
     private final AnimalService animalService;
 
+    @Operation(summary = "List all animals", description = "Returns every animal in the shelter, sorted by ID.")
     @GetMapping
     public List<AnimalResponse> findAll() {
         return animalService.findAll();
     }
 
+    @Operation(summary = "Get an animal by ID")
     @GetMapping("/{id}")
     public ResponseEntity<AnimalResponse> findById(@PathVariable Long id) {
         return animalService.findById(id)
@@ -46,6 +49,7 @@ public class AnimalApiController {
     /**
      * Lists adopted animals.
      */
+    @Operation(summary = "List adopted animals")
     @GetMapping("/adopted")
     public List<AnimalResponse> findAdopted() {
         return animalService.findAdopted();
@@ -54,6 +58,7 @@ public class AnimalApiController {
     /**
      * Creates a new animal.
      */
+    @Operation(summary = "Create an animal", description = "New animals start as AVAILABLE. If no image is given, a fallback is chosen by type.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AnimalResponse create(@RequestBody @Valid AnimalCreateRequest request) {
@@ -63,6 +68,7 @@ public class AnimalApiController {
     /**
      * Adopts an animal
      */
+    @Operation(summary = "Adopt an animal", description = "Marks the animal as ADOPTED and records today's date.")
     @PostMapping("/{id}/adopt")
     public ResponseEntity<AnimalResponse> adopt(@PathVariable Long id) {
         return animalService.adopt(id)
