@@ -1,5 +1,6 @@
 package lv.bootcamp.shelter.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lv.bootcamp.shelter.dto.AnimalCreateRequest;
 import lv.bootcamp.shelter.dto.AnimalResponse;
@@ -22,6 +23,7 @@ import java.util.List;
  * REST controller for shelter animal endpoints.
  * Returns JSON — does not render HTML pages.
  */
+@Tag(name = "Animals", description = "Shelter animals and adoptions")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/animals")
