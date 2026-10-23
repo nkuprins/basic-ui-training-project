@@ -3,11 +3,15 @@ package lv.bootcamp.shelter.controller;
 import lombok.RequiredArgsConstructor;
 import lv.bootcamp.shelter.form.AnimalForm;
 import lv.bootcamp.shelter.service.AnimalService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
 @Controller
@@ -35,6 +39,17 @@ public class AnimalPageController {
     @PostMapping("/animals")
     public String create(@ModelAttribute("form") AnimalForm form) {
         animalService.createFromForm(form);
+        return "redirect:/animals";
+    }
+
+    @PostMapping("/animals/{id}/adopt")
+    public String adopt(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            animalService.adopt(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        } catch (IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
         return "redirect:/animals";
     }
 }
